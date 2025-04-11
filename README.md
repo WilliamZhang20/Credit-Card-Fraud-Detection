@@ -2,10 +2,11 @@
 
 ## Table of contents
 - [Introduction](#introduction)
-- [Data Overview](#dataset-overview)
+- [Data Overview](#data-overview)
 - [Model Implementation](#model-implementation)
+  - [Autoencoder](#autoencoder)
   - [Gaussian Mixture Model](#gaussian-mixture-model)
-  - [Isolation Forest](#isolation-forest)
+  - [Random Forest](#random-forest)
   - [Gradient Boosting](#gradient-boosting)
 - [Conclusion](#conclusion)
 
@@ -30,6 +31,14 @@ Additionally, the data was split into a training set and a test set, with the tr
 ## Model Implementation
 
 ### Autoencoder
+
+An autoencoder is a neural network that has layers that narrow down into a bottleneck with fewer neurons, and then widen back up with an output layer as big as input. Generally, it is used for denoising, as the bottleneck makes the neural network capture the most essential components, to then reconstruct the data.
+
+It is applicable to anomaly detection as well, where it is trained to reconstruct the normal data, and then flags anomalies if a particular datapoint has a very high reconstruction error. However, as I demonstrate in the `Fraud_Detection_Autoencoder.ipynb` notebook, that technique was rather unwieldy for this dataset.
+
+I used Mean-Squared-Error, and showed on a plot that the reconstruction error was small for normal points, and big for fraudulent points. But setting a threshold for error wasn't enough to get an accuracy better than a coin flip.
+
+So I had to deploy scikit-learn's logistic regressor to take reconstruction error and then output normal/fraudulent, also while using oversampled data to improve the dataset balance, turning it into a hybrid model. Even that has so far achieved the worst precision-recall curve area score. 
 
 ### Gaussian Mixture Model
 
